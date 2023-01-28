@@ -19,9 +19,12 @@ return new class extends Migration
             $table->unsignedInteger('recievable_id');
             $table->bigInteger('amount');
             $table->bigInteger('downpayment');
+            $table->bigInteger('monthly_due');
+            $table->bigInteger('paid_amount');
             $table->bigInteger('balance')->nullable();
             $table->integer('paid')->nullable()->default(0);
             $table->integer('terms');
+            $table->integer('interest');
             $table->string('status')->nullable()->default('Unpaid');
             $table->timestamps();
         });

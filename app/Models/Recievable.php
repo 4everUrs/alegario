@@ -11,4 +11,8 @@ class Recievable extends Model
     protected $fillable = [
         'type', 'amount', 'status'
     ];
+    public function Installment()
+    {
+        return $this->hasOne(Installment::class);
+    }
 }

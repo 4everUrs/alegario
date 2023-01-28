@@ -16,7 +16,7 @@ class Collections extends Component
     public $reciepient, $address, $phone, $practitioner, $totalAmount, $total;
     public $particulars, $subTotal, $tax, $discount = 0, $grandTotal, $cash_collection;
     public $terms, $downpayment;
-    public $installment_data, $collection_data;
+    public $installment_data, $collection_data, $interest;
 
     protected $rules = [
         'reciepient' => 'required|min:3',
@@ -42,6 +42,7 @@ class Collections extends Component
             'collections' => Collection::with('Practitioner')->get(),
         ]);
     }
+
     public function loadData($id)
     {
         $this->reset();
@@ -135,12 +136,15 @@ class Collections extends Component
         ]);
         $recievable = Recievable::latest('id')->first();
         Installment::create([
-            'amount' => $this->totalAmount,
+            'amount' => $this->totalAmount + ($this->totalAmount * ($this->interest / 100)),
+            'monthly_due' => ($this->totalAmount + ($this->totalAmount * ($this->interest / 100))) / $this->terms,
             'downpayment' => $this->downpayment,
             'terms' => $this->terms,
             'balance' => $this->totalAmount - $this->downpayment,
             'collection_id' => $collecion->id,
-            'recievable_id' => $recievable->id
+            'recievable_id' => $recievable->id,
+            'interest' => $this->interest,
+            'paid_amount' => $this->downpayment
         ]);
         $installment = Installment::latest('id')->first();
         $collecion->installment_id = $installment->id;

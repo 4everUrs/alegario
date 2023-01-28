@@ -87,6 +87,9 @@
                                                         <th>Payment Type</th>
                                                         <th>Downpayment</th>
                                                         <th>Balance</th>
+                                                        <th>Monthly Due</th>
+                                                        <th>Paid Amount</th>
+                                                        <th>Interest</th>
                                                         <th>Term</th>
                                                         <th>Status</th>
                                                     </thead>
@@ -97,6 +100,9 @@
                                                             <td>Installment</td>
                                                             <td>@money($installment_data->downpayment)</td>
                                                             <td>@money($installment_data->balance)</td>
+                                                            <td>@money($installment_data->monthly_due)</td>
+                                                            <td>@money($installment_data->paid_amount)</td>
+                                                            <td>{{$installment_data->interest}} %</td>
                                                             <td>{{$installment_data->paid}}/{{$installment_data->terms}}</td>
                                                             @if ($installment_data->balance == 0)
                                                                 <td><span class="badge bg-success text-dark">Paid</span></td>
@@ -248,6 +254,13 @@
                                 <span class="input-group-text">$</span> 
                                 <input type="text" class="form-control" wire:model="downpayment">
                                 <span class="input-group-text">.00</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label>Interest Rate</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" wire:model="interest">
+                                <span class="input-group-text">%</span>
                             </div>
                         </div>
                     </div>

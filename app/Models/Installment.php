@@ -9,6 +9,6 @@ class Installment extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'amount', 'downpayment', 'paid', 'terms', 'status', 'balance', 'collection_id', 'recievable_id'
+        'amount', 'downpayment', 'paid', 'terms', 'status', 'balance', 'collection_id', 'recievable_id', 'monthly_due', 'interest', 'paid_amount'
     ];
 }
