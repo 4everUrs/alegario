@@ -58,19 +58,19 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 });
 
-Route::get('down', function () {
-    \Artisan::call('down --secret="459f325e5b0a453a15e6226b57ee5366"');
-    return redirect()->route('home');
-});
-Route::get('up', function () {
-    \Artisan::call('up');
-    return redirect()->route('home');
-});
-Route::get('seed', function () {
-    \Artisan::call('db:seed');
-    return redirect()->route('home');
-});
-Route::get('db-reset', function () {
-    \Artisan::call('migrate:refresh');
-    return redirect()->route('home');
-});
+// Route::get('down', function () {
+//     \Artisan::call('down --secret="459f325e5b0a453a15e6226b57ee5366"');
+//     return redirect()->route('home');
+// });
+// Route::get('up', function () {
+//     \Artisan::call('up');
+//     return redirect()->route('home');
+// });
+// Route::get('seed', function () {
+//     \Artisan::call('db:seed');
+//     return redirect()->route('home');
+// });
+// Route::get('db-reset', function () {
+//     \Artisan::call('migrate:refresh');
+//     return redirect()->route('home');
+// });
