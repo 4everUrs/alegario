@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('down', function () {
     \Artisan::call('down --secret="459f325e5b0a453a15e6226b57ee5366"');
-    return redirect();
+    return redirect('/');
 });
 Route::get('up', function () {
     \Artisan::call('up');
