@@ -67,11 +67,11 @@
                     </ul>
                 </li><!-- End Tables Nav -->
         
-                <li class="nav-item">
-                    <a class="nav-link collapsed" data-bs-target="#payables" data-bs-toggle="collapse" href="#">
-                        <i class="bi bi-journal-minus"></i><span>Accounts Payable</span>
-                    </a>
-                </li><!-- End Charts Nav -->
+               <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#icons-nav" href="{{route('payables')}}">
+                    <i class="bi bi-cash"></i><span>Accounts Payables</span>
+                </a>
+            </li><!-- End Charts Nav -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" data-bs-target="#icons-nav" href="{{route('recievables')}}">
                         <i class="bi bi-cash"></i><span>Accounts Recievables</span>

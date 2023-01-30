@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Livewire\Ap\AccountPayables;
 use App\Http\Livewire\Ar\AccountsRecievable;
 use App\Http\Livewire\Bm\Allocation;
 use App\Http\Livewire\Bm\History;
@@ -40,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('general/charts-of-accounts', ChartOfAccounts::class)->name('generalchart');
     Route::get('collections', Collections::class)->name('collections');
     Route::get('recievable', AccountsRecievable::class)->name('recievables');
+    Route::get('payables', AccountPayables::class)->name('payables');
 });
 
 require __DIR__ . '/auth.php';
