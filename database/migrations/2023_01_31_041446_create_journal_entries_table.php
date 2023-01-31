@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('journal_entries', function (Blueprint $table) {
-            $table->id();
+            $table->id()->startingValue(10001);
             $table->string('encoder');
             $table->string('description');
             $table->timestamps();
