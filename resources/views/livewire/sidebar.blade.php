@@ -60,7 +60,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="tables-data.html">
+                            <a href="{{route('journal')}}">
                                 <i class="bi bi-circle"></i><span>Journal Entry</span>
                             </a>
                         </li>

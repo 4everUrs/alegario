@@ -9,6 +9,7 @@ use App\Http\Livewire\Bm\RequestList;
 use App\Http\Livewire\Collections\Collections;
 use App\Http\Livewire\Disbursement\DisburseRequests;
 use App\Http\Livewire\General\ChartOfAccounts;
+use App\Http\Livewire\General\JournalEntry;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('bm/history', History::class)->name('bmhistory');
     Route::get('disburse/request', DisburseRequests::class)->name('disburserequest');
     Route::get('general/charts-of-accounts', ChartOfAccounts::class)->name('generalchart');
+    Route::get('general/journal-entry', JournalEntry::class)->name('journal');
     Route::get('collections', Collections::class)->name('collections');
     Route::get('recievable', AccountsRecievable::class)->name('recievables');
     Route::get('payables', AccountPayables::class)->name('payables');

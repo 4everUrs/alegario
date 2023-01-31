@@ -102,10 +102,20 @@ class Collections extends Component
 
         if ($this->payment_method == 'installment') {
             $this->setInstallment();
+        } elseif ($this->payment_method == 'cash') {
+            $this->insertCash();
         }
         toastr()->addSuccess('Collection Added!');
         $this->dispatchBrowserEvent('close-modal');
         $this->reset();
+    }
+    public function insertCash()
+    {
+        $cash = Chart::find('10003');
+
+        $cash->balance = $cash->balance + $this->totalAmount + $this->tax;
+
+        $cash->save();
     }
     public function gettingAmount()
     {
@@ -130,7 +140,7 @@ class Collections extends Component
     {
         $collecion = Collection::latest('id')->first();
         Recievable::create([
-            'amount' => $this->totalAmount - $this->downpayment,
+            'amount' => ($this->totalAmount + ($this->totalAmount * ($this->interest / 100))) / $this->terms,
             'status' => 'Unpaid',
             'type' => 'Invoice'
         ]);
@@ -150,7 +160,7 @@ class Collections extends Component
         $collecion->installment_id = $installment->id;
         $collecion->save();
         Chart::find('10001')->update([
-            'balance' =>    $this->totalAmount - $this->downpayment,
+            'balance' =>    $collecion->amount,
         ]);
         Chart::find('10003')->update([
             'balance' =>  $this->downpayment,
