@@ -6,7 +6,7 @@
     </x-slot>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Title</h5>
+            <h5 class="card-title">Disburse Budget</h5>
             <table class="table datatable">
                 <thead>
                     <th class="text-center align-middle">No</th>
@@ -26,14 +26,18 @@
                             <td class="text-center align-middle">@money($request->BudgetRequests->amount)</td>
                             <td class="text-center align-middle">{{$request->BudgetRequests->description}}</td>
                             <td class="text-center align-middle">@date($request->created_at)</td>
-                            @if (!empty($request->aproved_date))
+                            @if (!empty($request->date_aproved))
                                 <td class="text-center align-middle">@date($request->date_aproved)</td>
                             @else
                                 <td class="text-center align-middle">--/--/----</td>
                             @endif
                             <td class="text-center align-middle">{{$request->status}}</td>
                             <td class="text-center align-middle">
-                                <button class="btn btn-sm btn-primary">Disburse</button>
+                                @if ($request->status == 'Pending')
+                                    <button class="btn btn-sm btn-primary" wire:click="disburse({{$request->id}})">Disburse</button>
+                                @else
+                                    <button class="btn btn-sm btn-secondary" wire:click="disburse({{$request->id}})" disabled>Disbursed</button>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -41,4 +45,34 @@
             </table>
         </div>
     </div>
+
+    <x-breeze-modal id="disburseModal" model="disburseBudget" wire:ignore.self>
+        <x-slot name="title">Disbursement</x-slot>
+
+        <x-slot name="body">
+            @if ($budget)
+                <div class="form-group">
+                    <label>Account</label>
+                    <select class="form-select" wire:model="account">
+                        <option value="">Choose...</option>
+                        <option value="improvisation">Improvisation: @money($budget->improvisation)</option>
+                        <option value="general">General Expenses: @money($budget->general)</option>
+                        <option value="maintenance">Maintenance: @money($budget->maintenance)</option>
+                        <option value="operating">Operating: @money($budget->operating)</option>
+                    </select>
+                    <label>Amount</label>
+                    <input type="text" class="form-control" wire:model="amount">
+                </div>
+            @endif
+        </x-slot>
+    </x-breeze-modal>
+
+    <script>
+        window.addEventListener('show-modal',event=>{
+            $('#disburseModal').modal('show');
+        })
+        window.addEventListener('close-modal',event=>{
+            $('#disburseModal').modal('hide');
+        })
+    </script>
 </div>

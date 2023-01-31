@@ -11,7 +11,7 @@ class DisburseRequest extends Model
     use HasFactory;
 
     protected $fillable = [
-        'budget_requests_id', 'status'
+        'budget_requests_id', 'status', 'approve_amount'
     ];
     public function BudgetRequests()
     {

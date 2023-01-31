@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('budget_requests_id');
             $table->string('status');
+            $table->bigInteger('approve_amount')->nullable();
             $table->string('date_aproved')->nullable();
             $table->timestamps();
         });
