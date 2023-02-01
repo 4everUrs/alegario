@@ -17,6 +17,7 @@
                 </thead>
                 <tbody>
                     @foreach ($journals as $index => $journal)
+                       <tr>
                         <td class="text-center align-middle">{{$index+1}}</td>
                         <td class="text-center align-middle">{{$journal->encoder}}</td>
                         <td class="text-center align-middle">{{$journal->description}}</td>
@@ -24,6 +25,7 @@
                         <td class="text-center align-middle">
                             <button class="btn btn-primary btn-sm" wire:click="loadModal({{$journal->id}})">View</button>
                         </td>
+                       </tr>
                     @endforeach
                 </tbody>
             </table>
