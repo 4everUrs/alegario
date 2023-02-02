@@ -68,8 +68,14 @@
         <x-slot name="title">Create Recievables</x-slot>
         <x-slot name="body">
             <div class="form-group">
+                <div>
+                    <small class="float-end"> Total Cash: @money($cash->balance)</small><br>
+                </div>
                 <label>Amount</label>
+                
                 <input type="text" class="form-control" wire:model='amount'>
+                @error('balance') <span class="text-danger">{{ $message }}</span> @enderror
+                @error('amount') <span class="text-danger">{{ $message }}</span> @enderror
                 
             </div>
         </x-slot>

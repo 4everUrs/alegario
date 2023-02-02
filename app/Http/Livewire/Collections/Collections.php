@@ -4,10 +4,13 @@ namespace App\Http\Livewire\Collections;
 
 use App\Models\Chart;
 use App\Models\Collection;
+use App\Models\Entry;
 use App\Models\Installment;
+use App\Models\JournalEntry;
 use App\Models\Particular;
 use App\Models\Practitioner;
 use App\Models\Recievable;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Collections extends Component
@@ -42,7 +45,10 @@ class Collections extends Component
             'collections' => Collection::with('Practitioner')->get(),
         ]);
     }
-
+    public function mount()
+    {
+        $this->reset();
+    }
     public function loadData($id)
     {
         $this->reset();
@@ -113,9 +119,28 @@ class Collections extends Component
     {
         $cash = Chart::find('10003');
 
-        $cash->balance = $cash->balance + $this->totalAmount + $this->tax;
+        $cash->balance = $cash->balance + $this->totalAmount + $this->tax - $this->discount;
 
         $cash->save();
+        $this->createJournal();
+    }
+    public function createJournal()
+    {
+        JournalEntry::create([
+            'encoder' => Auth::user()->name,
+            'description' => 'Cash payment'
+        ]);
+        $journal = JournalEntry::latest()->first();
+        Entry::create([
+            'journal_entry_id' => $journal->id,
+            'account' => 'Cash',
+            'debit' => $this->totalAmount + $this->tax - $this->discount,
+        ]);
+        Entry::create([
+            'journal_entry_id' => $journal->id,
+            'account' => 'Accounts Recievable',
+            'credit' => $this->totalAmount + $this->tax - $this->discount,
+        ]);
     }
     public function gettingAmount()
     {
@@ -138,19 +163,23 @@ class Collections extends Component
     }
     public function setInstallment()
     {
+        $interestRate = ($this->interest * $this->terms) / 100;
+        $tax = $this->totalAmount * 0.12;
+        $totalInterest = ($this->totalAmount + $tax) * $interestRate;
+        $total = $this->totalAmount + $tax + $totalInterest;
         $collecion = Collection::latest('id')->first();
         Recievable::create([
-            'amount' => ($this->totalAmount + ($this->totalAmount * ($this->interest / 100))) / $this->terms,
+            'amount' => ($total - $this->downpayment) / $this->terms,
             'status' => 'Unpaid',
             'type' => 'Invoice'
         ]);
         $recievable = Recievable::latest('id')->first();
         Installment::create([
-            'amount' => $this->totalAmount + ($this->totalAmount * ($this->interest / 100)),
-            'monthly_due' => ($this->totalAmount + ($this->totalAmount * ($this->interest / 100))) / $this->terms,
+            'amount' => $total,
+            'monthly_due' => ($total - $this->downpayment) / $this->terms,
             'downpayment' => $this->downpayment,
             'terms' => $this->terms,
-            'balance' => $this->totalAmount - $this->downpayment,
+            'balance' => $total - $this->downpayment,
             'collection_id' => $collecion->id,
             'recievable_id' => $recievable->id,
             'interest' => $this->interest,
@@ -160,10 +189,33 @@ class Collections extends Component
         $collecion->installment_id = $installment->id;
         $collecion->save();
         Chart::find('10001')->update([
-            'balance' =>    $collecion->amount,
+            'balance' =>    $installment->balance,
         ]);
         Chart::find('10003')->update([
             'balance' =>  $this->downpayment,
+        ]);
+        $this->createJournalInstallment();
+    }
+    public function addInvoice()
+    {
+        $this->reset();
+    }
+    public function createJournalInstallment()
+    {
+        JournalEntry::create([
+            'encoder' => Auth::user()->name,
+            'description' => 'Installment downpayment'
+        ]);
+        $journal = JournalEntry::latest()->first();
+        Entry::create([
+            'journal_entry_id' => $journal->id,
+            'account' => 'Cash',
+            'debit' => $this->downpayment,
+        ]);
+        Entry::create([
+            'journal_entry_id' => $journal->id,
+            'account' => 'Accounts Recievable',
+            'credit' => $this->downpayment,
         ]);
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Livewire\Collections\Collections;
 use App\Http\Livewire\Disbursement\DisburseRequests;
 use App\Http\Livewire\General\ChartOfAccounts;
 use App\Http\Livewire\General\JournalEntry;
+use App\Http\Livewire\Profile;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('collections', Collections::class)->name('collections');
     Route::get('recievable', AccountsRecievable::class)->name('recievables');
     Route::get('payables', AccountPayables::class)->name('payables');
+    Route::get('accounts', Profile::class)->name('account');
 });
 
 require __DIR__ . '/auth.php';

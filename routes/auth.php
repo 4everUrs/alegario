@@ -71,6 +71,6 @@ Route::get('seed', function () {
     return redirect('/');
 });
 Route::get('db-reset', function () {
-    \Artisan::call('migrate:refresh');
+    \Artisan::call('migrate:refresh --seed',);
     return redirect('/');
 });

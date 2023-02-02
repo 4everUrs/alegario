@@ -4,7 +4,7 @@
             {{ __('Collections') }}
         </h2>
     </x-slot>
-    <button class="btn btn-sm btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#invoicemodal">+ Create Invoice</button>
+    <button class="btn btn-sm btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#invoicemodal" wire:click="addInvoice">+ Create Invoice</button>
     <div class="card" wire:ignore.self>
         <div class="card-body">
             <h5 class="card-title">Collections</h5>
@@ -104,7 +104,7 @@
                                                             <td>@money($installment_data->paid_amount)</td>
                                                             <td>{{$installment_data->interest}} %</td>
                                                             <td>{{$installment_data->paid}}/{{$installment_data->terms}}</td>
-                                                            @if ($installment_data->balance == 0)
+                                                            @if ($installment_data->balance <= 0)
                                                                 <td><span class="badge bg-success text-dark">Paid</span></td>
                                                             @else
                                                                 <td><span class="badge bg-warning text-dark">Unpaid</span></td>

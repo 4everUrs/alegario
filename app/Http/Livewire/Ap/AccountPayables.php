@@ -25,8 +25,10 @@ class AccountPayables extends Component
     }
     public function render()
     {
+
         return view('livewire.ap.account-payables', [
             'payables' => Payable::orderBy('id', 'desc')->get(),
+            'cash' => Chart::find('10003'),
         ]);
     }
     public function mount()
@@ -53,21 +55,30 @@ class AccountPayables extends Component
     }
     public function pay($id)
     {
+
         $this->dispatchBrowserEvent('open-modal');
         $this->payable_id = $id;
     }
     public function payNow()
     {
+        $this->validate([
+            'amount' => 'required'
+        ]);
+        $cash = Chart::find('10003');
         $payable = Payable::find($this->payable_id);
-        $payable->amount = $payable->amount - $this->amount;
-        $payable->save();
-        $this->createJournal();
-        $chart = Chart::find('10002');
-        $chart->balance = $chart->balance - $this->amount;
-        $chart->save();
-        toastr()->addSuccess('Payment Successfull');
-        $this->dispatchBrowserEvent('close-modal-paynow');
-        $this->reset();
+        if ($cash->balance <= $payable->amount) {
+            $this->addError('balance', 'Insufficient balance');
+        } else {
+            $this->createJournal();
+            $chart = Chart::find('10002');
+            $chart->balance = $chart->balance - $this->amount;
+            $chart->save();
+            $cash->balance = $cash->balance - $this->amount;
+            $cash->save();
+            toastr()->addSuccess('Payment Successfull');
+            $this->dispatchBrowserEvent('close-modal-paynow');
+            $this->reset();
+        }
     }
 
     public function createJournal()
@@ -80,12 +91,12 @@ class AccountPayables extends Component
         Entry::create([
             'journal_entry_id' => $journal->id,
             'account' => 'Cash',
-            'debit' => $this->amount,
+            'credit' => $this->amount,
         ]);
         Entry::create([
             'journal_entry_id' => $journal->id,
             'account' => 'Accounts Payable',
-            'credit' => $this->amount,
+            'debit' => $this->amount,
         ]);
     }
 }

@@ -31,8 +31,6 @@ class BudgetRequestSeeder extends Seeder
                 'description' => 'Purchasing Weeds',
                 'amount' => '1000',
                 'status' => 'Pending',
-
-
             ],
 
         ]);

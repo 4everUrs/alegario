@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class ChartOfAccounts extends Component
 {
-    public $type, $name;
+    public $type, $name, $balance;
     protected $rules = [
         'type' => 'required',
         'name' => 'required|string'
@@ -18,19 +18,27 @@ class ChartOfAccounts extends Component
     }
     public function render()
     {
+        if ($this->type == 'Equity') {
+            $this->dispatchBrowserEvent('show-balance');
+        }
         return view('livewire.general.chart-of-accounts', [
-            'assets' => Chart::where('type', 'Asset')->get(),
-            'liabilities' => Chart::where('type', 'Liabilities')->get(),
-            'revenues' => Chart::where('type', 'Revenue')->get(),
-            'expenses' => Chart::where('type', 'Expenses')->get(),
-            'equities' => Chart::where('type', 'equity')->get(),
+            'assets' => Chart::all(),
         ]);
     }
 
     public function newAccount()
     {
         $validatedData = $this->validate();
-        Chart::create($validatedData);
+
+        if ($this->type != 'Equity') {
+            Chart::create($validatedData);
+        } else {
+            Chart::create([
+                'type' => $this->type,
+                'name' => $this->name,
+                'balance' => $this->balance
+            ]);
+        }
         toastr()->addSuccess('Create account succesfully');
 
         $this->dispatchBrowserEvent('close-modal-account');
