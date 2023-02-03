@@ -13,7 +13,11 @@
     
                     <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
                     <h2>{{Auth::user()->name}}</h2>
-                    <h3>Web Designer</h3>
+                    @if (Auth::user()->user_level == '0')
+                   <h3>Administrator</h3>
+                    @else
+                    <h3>Manager</h3>
+                    @endif
                     <div class="social-links mt-2">
                         <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                         <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -30,7 +34,7 @@
             <div class="card">
                 <div class="card-body pt-3">
                     <!-- Bordered Tabs -->
-                    <ul class="nav nav-tabs nav-tabs-bordered">
+                    <ul class="nav nav-tabs nav-tabs-bordered" wire:ignore>
     
                         <li class="nav-item">
                             <button class="nav-link active" data-bs-toggle="tab"
@@ -50,7 +54,7 @@
                     </ul>
                     <div class="tab-content pt-2">
     
-                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview" wire:ignore.self>
                             <h5 class="card-title">About</h5>
                             <p class="small fst-italic">Alegario Super Admin</p>
     
@@ -68,7 +72,11 @@
     
                             <div class="row">
                                 <div class="col-lg-3 col-md-4 label">Job</div>
-                                <div class="col-lg-9 col-md-8">Web Designer</div>
+                                @if (Auth::user()->user_level == '0')
+                                    <div class="col-lg-9 col-md-8">Administrator</div>
+                                @else
+                                    <div class="col-lg-9 col-md-8">Manager</div>
+                                @endif
                             </div>
 
                             <div class="row">
@@ -78,10 +86,12 @@
     
                         </div>
     
-                        <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                        <div class="tab-pane fade profile-edit pt-3" id="profile-edit" wire:ignore.self>
     
                             <!-- Profile Edit Form -->
-                            <form>
+                            <form wire:submit.prevent="save">
+                              
+
                                 <div class="row mb-3">
                                     <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                     <div class="col-md-8 col-lg-9">
@@ -99,7 +109,14 @@
                                     <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                                     <div class="col-md-8 col-lg-9">
                                         <input name="fullName" type="text" class="form-control" id="fullName"
-                                            value="{{Auth::user()->name}}">
+                                             wire:model='name'>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Username</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="username" type="text" class="form-control" id="fullName"
+                                             wire:model='username'>
                                     </div>
                                 </div>
     
@@ -108,14 +125,18 @@
                                     <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
                                     <div class="col-md-8 col-lg-9">
                                         <input name="company" type="text" class="form-control" id="company"
-                                            value="Lueilwitz, Wisoky and Leuschke" disabled>
+                                            value="Alegario Cure Medical" disabled>
                                     </div>
                                 </div>
     
                                 <div class="row mb-3">
                                     <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
                                     <div class="col-md-8 col-lg-9">
-                                        <input name="job" type="text" class="form-control" id="Job" value="Web Designer" disabled>
+                                        @if (Auth::user()->user_level == '0')
+                                            <input name="job" type="text" class="form-control" id="Job" value="Admininstrator" disabled>
+                                        @else
+                                            <input name="job" type="text" class="form-control" id="Job" value="Manager" disabled>
+                                        @endif
                                     </div>
                                 </div>
     
@@ -124,7 +145,7 @@
                                     <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                                     <div class="col-md-8 col-lg-9">
                                         <input name="phone" type="text" class="form-control" id="Phone"
-                                            value="(436) 486-3538 x29071">
+                                           wire:model="phone">
                                     </div>
                                 </div>
     
@@ -132,7 +153,7 @@
                                     <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                     <div class="col-md-8 col-lg-9">
                                         <input name="email" type="email" class="form-control" id="Email"
-                                            value="{{Auth::user()->email}}">
+                                            wire:model="email">
                                     </div>
                                 </div>
     
@@ -144,36 +165,42 @@
     
                         </div>
       
-                        <div class="tab-pane fade pt-3" id="profile-change-password">
+                        <div class="tab-pane fade pt-3" id="profile-change-password" wire:ignore.self>
                             <!-- Change Password Form -->
-                            <form>
-    
+                            <form wire:submit.prevent="changePassword">
                                 <div class="row mb-3">
-                                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
+                                    <label for="old_password" class="col-md-4 col-lg-3 col-form-label">Current
                                         Password</label>
                                     <div class="col-md-8 col-lg-9">
-                                        <input name="password" type="password" class="form-control" id="currentPassword">
+                                        <input wire:model='old_password' id="old_password" name="old_password" type="password" class="form-control" autocomplete="current-password">
+                                        @error('old_password') <span class="text-danger">{{ $message }}</span><br> @enderror
                                     </div>
                                 </div>
     
                                 <div class="row mb-3">
-                                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                                    <label for="new_password" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                                     <div class="col-md-8 col-lg-9">
-                                        <input name="newpassword" type="password" class="form-control" id="newPassword">
+                                        <input wire:model="new_password" id="new_password" name="new_password" type="password" class="form-control" autocomplete="new_password">
+                                        @error('new_password') <span class="text-danger">{{ $message }}</span><br> @enderror
                                     </div>
                                 </div>
     
                                 <div class="row mb-3">
-                                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
+                                    <label for="confirm_password" class="col-md-4 col-lg-3 col-form-label">Re-enter New
                                         Password</label>
                                     <div class="col-md-8 col-lg-9">
-                                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                                        <input wire:model="confirm_password" id="confirm_password" name="confirm_password" type="password" class="form-control" autocomplete="confirm_password">
+                                        @error('confirm_password') <span class="text-danger">{{ $message }}</span><br> @enderror
                                     </div>
                                 </div>
     
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary">Change Password</button>
                                 </div>
+                                @if (session('status') === 'password-updated')
+                                <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
+                                    class="text-sm text-gray-600 dark:text-gray-400">{{ __('Saved.') }}</p>
+                                @endif
                             </form><!-- End Change Password Form -->
     
                         </div>

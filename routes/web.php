@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileEditController;
 use App\Http\Livewire\Ap\AccountPayables;
 use App\Http\Livewire\Ar\AccountsRecievable;
 use App\Http\Livewire\Bm\Allocation;

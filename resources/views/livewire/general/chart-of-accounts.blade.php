@@ -32,7 +32,7 @@
                             <td>@money($asset->balance)</td>
                             @isAdmin
                             <td class="text-center align-middle">
-                                <button class="btn btn-success btn-sm">EDIT</button>
+                                <button class="btn btn-success btn-sm" wire:click="edit({{$asset->id}})">EDIT</button>
                             </td>
                             @endisAdmin
                         </tr>
@@ -71,9 +71,27 @@
         </div>
     </x-slot>
 </x-breeze-modal>
+
+<x-breeze-modal id="editModal" model="saveEdit" wire:ignore.self>
+    <x-slot name="title">Edit</x-slot>
+    <x-slot name="body">    
+        @if ($chart)
+            <label>Account Name</label>
+            <input type="text" class="form-control" wire:model="name">
+            <label>Balance</label>
+            <input type="text" class="form-control" wire:model="balance">
+        @endif
+    </x-slot>
+</x-breeze-modal>
 <script>
     window.addEventListener('close-modal-account', event => {
     $('#newAccount').modal('hide')
+    })
+    window.addEventListener('open-modal', event => {
+    $('#editModal').modal('show')
+    })
+    window.addEventListener('close-modal', event => {
+    $('#editModal').modal('hide')
     })
     window.addEventListener('show-balance', event => {
         var x = document.getElementById('balance');

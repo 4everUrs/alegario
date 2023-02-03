@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PractitionerSeeder::class);
         $this->call(ChartOfAccountsSeeder::class);
         $this->call(AccountSeeder::class);
+        $this->call(BudgetSeeder::class);
     }
 }

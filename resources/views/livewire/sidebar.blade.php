@@ -35,17 +35,9 @@
                 </li><!-- End Components Nav -->
         
                 <li class="nav-item">
-                    <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-                        <i class="bi bi-journal-text"></i><span>Disbursement</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <a class="nav-link collapsed"  href="{{route('disburserequest')}}">
+                        <i class="bi bi-journal-text"></i><span>Disbursement</span>
                     </a>
-                    <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                        <li>
-                            <a href="{{route('disburserequest')}}">
-                                <i class="bi bi-circle"></i><span>Requests List</span>
-                            </a>
-                        </li>
-                        
-                    </ul>
                 </li><!-- End Forms Nav -->
         
                 <li class="nav-item">
@@ -71,7 +63,7 @@
                 <a class="nav-link collapsed" data-bs-target="#icons-nav" href="{{route('payables')}}">
                     <i class="bi bi-cash"></i><span>Accounts Payables</span>
                 </a>
-            </li><!-- End Charts Nav -->
+                 </li><!-- End Charts Nav -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" data-bs-target="#icons-nav" href="{{route('recievables')}}">
                         <i class="bi bi-cash"></i><span>Accounts Recievables</span>

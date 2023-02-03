@@ -50,20 +50,22 @@
         <x-slot name="title">Disbursement</x-slot>
 
         <x-slot name="body">
-            @if ($budget)
+            
                 <div class="form-group">
                     <label>Account</label>
                     <select class="form-select" wire:model="account">
                         <option value="">Choose...</option>
+                        @if ($budget)
                         <option value="improvisation">Improvisation: @money($budget->improvisation)</option>
                         <option value="general">General Expenses: @money($budget->general)</option>
                         <option value="maintenance">Maintenance: @money($budget->maintenance)</option>
                         <option value="operating">Operating: @money($budget->operating)</option>
+                        @endif
                     </select>
                     <label>Amount</label>
                     <input type="text" class="form-control" wire:model="amount">
                 </div>
-            @endif
+            
         </x-slot>
     </x-breeze-modal>
 

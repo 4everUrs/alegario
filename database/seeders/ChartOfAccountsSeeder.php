@@ -31,6 +31,21 @@ class ChartOfAccountsSeeder extends Seeder
                 'name' => 'Cash',
                 'balance' => '0',
             ],
+            [
+                'type' => 'Revenue',
+                'name' => 'Sales',
+                'balance' => '0',
+            ],
+            [
+                'type' => 'Equity',
+                'name' => 'Alegario Cure CEO',
+                'balance' => '0',
+            ],
+            [
+                'type' => 'Expenses',
+                'name' => 'General Expenses',
+                'balance' => '0',
+            ],
         ]);
     }
 }
