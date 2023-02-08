@@ -18,8 +18,6 @@ class BudgetRequestForm extends Component
         'department.required' => 'The Department is required.',
         'amount.required' => 'The Amount is required.',
         'amount.integer' => 'The amount is required and integer.',
-        'file_name.mimes' => 'File extenstion required only PDF/DOCX.',
-        'file_name.max' => 'File is maximum 5MB.',
     ];
     public function render()
     {
