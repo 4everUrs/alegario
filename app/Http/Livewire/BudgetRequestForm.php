@@ -35,19 +35,34 @@ class BudgetRequestForm extends Component
             'amount' => 'required|integer',
             'department' => 'required',
         ]);
-        try {
-            BudgetRequest::create([
-                'requestor' => $this->requestor,
-                'description' => $this->description,
-                'amount' => $this->amount,
-                'department' => $this->department,
-                'file_name' =>  $this->file_name->store('public'),
-                'original_file_name' => $originalFileName,
-            ]);
-            toastr()->addSuccess('Send Successfully');
-            $this->reset();
-        } catch (Error) {
-            toastr()->addError('Operation Failed');
+        if ($this->file_name) {
+            try {
+                BudgetRequest::create([
+                    'requestor' => $this->requestor,
+                    'description' => $this->description,
+                    'amount' => $this->amount,
+                    'department' => $this->department,
+                    'file_name' =>  $this->file_name->store('public'),
+                    'original_file_name' => $originalFileName,
+                ]);
+                toastr()->addSuccess('Send Successfully');
+                $this->reset();
+            } catch (Error $e) {
+                toastr()->addError('Operation Failed');
+            }
+        } else {
+            try {
+                BudgetRequest::create([
+                    'requestor' => $this->requestor,
+                    'description' => $this->description,
+                    'amount' => $this->amount,
+                    'department' => $this->department,
+                ]);
+                toastr()->addSuccess('Send Successfully');
+                $this->reset();
+            } catch (Error $e) {
+                toastr()->addError('Operation Failed');
+            }
         }
     }
 }

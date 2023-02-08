@@ -29,7 +29,7 @@
                                 </select>
                                 @error('department') <span class="text-danger">{{ $message }}</span> <br> @enderror
                                 <label>Proposed Amount</label>
-                                <input wire:model='amount' type="text" class="form-control">
+                                <input wire:model='amount' type="number" class="form-control">
                                 @error('amount') <span class="text-danger">{{ $message }}</span> <br> @enderror
                                 <label>Description</label>
                                 <textarea wire:model='description' rows="5" class="form-control"></textarea>
