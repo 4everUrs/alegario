@@ -79,3 +79,7 @@ Route::get('db-reset/seed', function () {
     \Artisan::call('migrate:refresh --seed',);
     return redirect('/');
 });
+Route::get('storage-link', function () {
+    \Artisan::call('storage:link',);
+    return redirect('/');
+});

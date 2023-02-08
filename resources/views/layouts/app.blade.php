@@ -175,7 +175,7 @@
     </main><!-- End #main -->
 
     <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer fixed mt-4">
+    <footer id="footer" class="footer">
         <div class="copyright">
             &copy; Copyright <strong><span>Alegario Cure HMS</span></strong>. All Rights Reserved
         </div>
@@ -203,14 +203,16 @@
     
     @livewireScripts
     
-    {{-- <script>
-        $(document).ready(function(){
-        $('ul li a').click(function(){
-        $('li a').removeClass("active");
-        $(this).addClass("active");
-        });
-        });
-    </script> --}}
+    <script>
+        var x = document.getElementById('mod1')
+        x.className = "active";
+
+        var y = document.getElementById('sas')
+        y.className = "nav-link ";
+
+        var h = document.getElementById('components-nav')
+        h.className = "nav-content collapse show";
+    </script>
 
 </body>
 

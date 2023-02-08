@@ -22,6 +22,7 @@ return new class extends Migration
             $table->bigInteger('approved_amount')->nullable();
             $table->string('date_approved')->nullable();
             $table->string('file_name')->nullable();
+            $table->string('original_file_name')->nullable();
             $table->string('status')->nullable()->default('Pending');
             $table->string('remarks')->nullable()->default('N/A');
             $table->timestamps();

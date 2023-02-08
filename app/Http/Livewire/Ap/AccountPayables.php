@@ -66,6 +66,9 @@ class AccountPayables extends Component
         ]);
         $cash = Chart::find('10003');
         $payable = Payable::find($this->payable_id);
+        $payable->status = 'Paid';
+        $payable->amount = $payable->amount - $this->amount;
+        $payable->save();
         if ($cash->balance <= $payable->amount) {
             $this->addError('balance', 'Insufficient balance');
         } else {

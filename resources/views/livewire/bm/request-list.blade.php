@@ -39,8 +39,8 @@
                         @else
                             <td class="text-center align-middle">--/--/----</td>
                         @endif
-                        @if (!empty($request->file_name))
-                            <td class="text-center align-middle">{{$request->file_name}}</td>
+                        @if (!empty($request->original_file_name))
+                            <td class="text-center align-middle"><a href="#" wire:click="download({{$request->id}})">{{$request->original_file_name}}</a></td>
                         @else
                             <td class="text-center align-middle">N/A</td>
                         @endif

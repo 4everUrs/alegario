@@ -4,8 +4,12 @@ namespace App\Http\Livewire\Disbursement;
 
 use App\Models\Budget;
 use App\Models\BudgetRequest;
+use App\Models\Chart;
 use App\Models\disbursement\DisburseRequest;
+use App\Models\Entry;
+use App\Models\JournalEntry;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class DisburseRequests extends Component
@@ -56,8 +60,33 @@ class DisburseRequests extends Component
             $budget->maintenance = $budget->maintenance - $this->amount;
             $budget->save();
         }
+        $this->creatJournal();
         $this->dispatchBrowserEvent('close-modal');
         toastr()->addSuccess('Operation Successfull');
         $this->reset();
+    }
+    public function creatJournal()
+    {
+        JournalEntry::create([
+            'encoder' => Auth::user()->name,
+            'description' => 'Budget Disbursement'
+        ]);
+        $journal = JournalEntry::latest()->first();
+        Entry::create([
+            'journal_entry_id' => $journal->id,
+            'account' => 'Expenses',
+            'debit' => $this->amount,
+        ]);
+        Entry::create([
+            'journal_entry_id' => $journal->id,
+            'account' => 'Cash',
+            'credit' => $this->amount,
+        ]);
+        $expenses = Chart::find('10006');
+        $expenses->balance = $expenses->balance + $this->amount;
+        $expenses->save();
+        $cash = Chart::find('10003');
+        $cash->balance = $cash->balance - $this->amount;
+        $cash->save();
     }
 }

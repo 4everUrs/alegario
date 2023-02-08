@@ -6,6 +6,7 @@ use App\Models\Budget;
 use App\Models\BudgetRequest;
 use App\Models\disbursement\DisburseRequest;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class RequestList extends Component
@@ -48,5 +49,10 @@ class RequestList extends Component
         toastr()->addSuccess('Denied Successfully');
         $this->reset();
         $this->dispatchBrowserEvent('close-modal');
+    }
+    public function download($id)
+    {
+        $requestBudget = BudgetRequest::find($id);
+        return response()->download(storage_path($requestBudget->file_name));
     }
 }

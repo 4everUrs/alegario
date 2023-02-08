@@ -7,6 +7,7 @@ use App\Http\Livewire\Ar\AccountsRecievable;
 use App\Http\Livewire\Bm\Allocation;
 use App\Http\Livewire\Bm\History;
 use App\Http\Livewire\Bm\RequestList;
+use App\Http\Livewire\BudgetRequestForm;
 use App\Http\Livewire\Collections\Collections;
 use App\Http\Livewire\Disbursement\DisburseRequests;
 use App\Http\Livewire\General\ChartOfAccounts;
@@ -48,5 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('payables', AccountPayables::class)->name('payables');
     Route::get('accounts', Profile::class)->name('account');
 });
+
+Route::get('request-form', BudgetRequestForm::class)->name('request-form');
 
 require __DIR__ . '/auth.php';
