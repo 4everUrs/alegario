@@ -34,7 +34,6 @@ class BudgetRequestForm extends Component
             'description' => 'required',
             'amount' => 'required|integer',
             'department' => 'required',
-            'file_name' => 'max:5120|mimes:pdf,docx'
         ]);
         try {
             BudgetRequest::create([
